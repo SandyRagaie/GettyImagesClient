@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">GettyImages</string>
+    <string name="search">Search</string>
+    <string name="error_downloading">Error while downloading data</string>
+    <string name="warning_empty_result">No images available with your search word! please try to re-phrase your word</string>
+    <string name="retry">retry</string>
+</resources>
