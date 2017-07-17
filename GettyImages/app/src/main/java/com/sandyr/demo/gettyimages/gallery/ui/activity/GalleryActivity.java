@@ -1,20 +1,25 @@
 package com.sandyr.demo.gettyimages.gallery.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -26,6 +31,7 @@ import com.sandyr.demo.gettyimages.gallery.presenter.GalleryPresenterImpl;
 import com.sandyr.demo.gettyimages.gallery.ui.adapters.GalleryAdapter;
 import com.sandyr.demo.gettyimages.gallery.ui.adapters.GalleryAdapterListener;
 import com.sandyr.demo.gettyimages.gallery.view.GalleryView;
+
 
 import java.util.ArrayList;
 
@@ -141,8 +147,10 @@ public class GalleryActivity extends AppCompatActivity implements GalleryView, G
     }
 
     @Override
-    public void onImageClick(int position, Drawable drawable) {
-        //TODO:: view Caption popup here
+    public void onImageClick(int position) {
+        GettyImage data= mPresenter.getCachedImages().get(position);
+        Intent intent =GalleryImageDetails.newIntent(GalleryActivity.this,data);
+startActivity(intent);
     }
 
     @Override

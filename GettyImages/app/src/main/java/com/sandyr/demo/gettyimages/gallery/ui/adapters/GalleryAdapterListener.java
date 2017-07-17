@@ -7,7 +7,7 @@ import android.graphics.drawable.Drawable;
  */
 public interface GalleryAdapterListener {
 
-    void onImageClick(int position, Drawable drawable);
+    void onImageClick(int position);
 
     void onEndList();
 }

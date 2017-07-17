@@ -1,6 +1,7 @@
 package com.sandyr.demo.gettyimages.gallery.ui.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.sandyr.demo.gettyimages.R;
 import com.sandyr.demo.gettyimages.gallery.model.GettyImage;
+import com.sandyr.demo.gettyimages.gallery.ui.activity.GalleryActivity;
+import com.sandyr.demo.gettyimages.gallery.view.GalleryView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -57,7 +60,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.CustomVi
         return imagesList.size();
     }
 
-    class CustomViewHolder extends RecyclerView.ViewHolder {
+    class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         protected ImageView imageView;
         protected TextView titleTextView;
         protected TextView idTextView;
@@ -68,6 +71,13 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.CustomVi
             this.imageView = (ImageView) ButterKnife.findById(view, R.id.gallery_item_image);
             this.titleTextView = (TextView) ButterKnife.findById(view, R.id.gallery_item_title);
             this.idTextView = (TextView) ButterKnife.findById(view, R.id.gallery_item_image_id);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            adapterListener.onImageClick(position);
         }
     }
 
