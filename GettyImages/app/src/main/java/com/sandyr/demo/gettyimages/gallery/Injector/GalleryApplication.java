@@ -3,6 +3,7 @@ package com.sandyr.demo.gettyimages.gallery.Injector;
 import android.app.Application;
 
 import com.sandyr.demo.gettyimages.gallery.Injector.modules.GalleryPresenterModule;
+import com.sandyr.demo.gettyimages.gallery.Injector.modules.InteractorModule;
 import com.sandyr.demo.gettyimages.gallery.ui.activity.GalleryActivity;
 
 import javax.inject.Singleton;
@@ -20,7 +21,7 @@ public class GalleryApplication extends Application {
      * further inject() methods for new classes that want to perform injection.
      */
     @Singleton
-    @Component(modules = {GalleryPresenterModule.class})
+    @Component(modules = {GalleryPresenterModule.class, InteractorModule.class})
     public interface ApplicationComponent {
         void inject(GalleryActivity galleryActivity);
     }
@@ -32,6 +33,7 @@ public class GalleryApplication extends Application {
         // This setups up the component which is used by other views (activities/fragments/etc., not Android views) for injection.
         // This pulls all modules which have statically declared @Provides methods automatically.
         component = DaggerGalleryApplication_ApplicationComponent.builder().build();
+
     }
 
     public ApplicationComponent component() {

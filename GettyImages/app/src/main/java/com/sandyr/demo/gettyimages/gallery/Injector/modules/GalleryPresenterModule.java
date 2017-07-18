@@ -14,11 +14,11 @@ import dagger.Provides;
  * Modules aren't used by you directly, they're used by Dagger. @Provides annotated methods are
  * used to lookup classes during injection. @Singleton indicates that only one instance of the object
  * is used, and used everywhere when injected.*/
-@Module
+@Module(includes = {InteractorModule.class})
 public class GalleryPresenterModule {
     @Singleton
     @Provides
-    static GalleryPresenter providesGalleryPresenter() {
+    static GalleryPresenter providesGalleryPresenter(InteractorModule interactorModule) {
         return new GalleryPresenterImpl();
     }
 }
