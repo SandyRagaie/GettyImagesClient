@@ -20,19 +20,20 @@ import butterknife.ButterKnife;
 
 public class GalleryImageDetails extends AppCompatActivity {
 
-    private static final String MAIN_ACTIVITY_GETTY_IMAGE ="#GETTYIMG" ;
+    private static final String MAIN_ACTIVITY_GETTY_IMAGE = "#GETTYIMG";
     @BindView(R.id.image_details)
     ImageView imageView;
     @BindView(R.id.title_details)
     TextView title_textview;
     @BindView(R.id.caption_details)
     TextView caption_textview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery_image_details);
         ButterKnife.bind(this);
-        GettyImage gettyImage=getIntentExtras();
+        GettyImage gettyImage = getIntentExtras();
         Picasso.with(this).load(gettyImage.getDisplay_size().get(0).getUri())
                 .error(R.drawable.ic_placeholder)
                 .placeholder(R.drawable.ic_placeholder)
@@ -44,14 +45,14 @@ public class GalleryImageDetails extends AppCompatActivity {
         caption_textview.setText(gettyImage.getCaption());
     }
 
-    public static Intent newIntent(Context context, GettyImage gettyImage){
+    public static Intent newIntent(Context context, GettyImage gettyImage) {
         Intent intent = new Intent(context, GalleryImageDetails.class);
         intent.putExtra(MAIN_ACTIVITY_GETTY_IMAGE, gettyImage);
         return intent;
     }
 
     private GettyImage getIntentExtras() {
-        GettyImage  data = getIntent().getExtras().getParcelable(MAIN_ACTIVITY_GETTY_IMAGE);
+        GettyImage data = getIntent().getExtras().getParcelable(MAIN_ACTIVITY_GETTY_IMAGE);
         return data;
     }
 }

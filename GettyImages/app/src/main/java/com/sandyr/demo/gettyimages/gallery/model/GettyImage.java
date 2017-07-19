@@ -20,7 +20,7 @@ public class GettyImage implements Parcelable {
         id = in.readString();
         title = in.readString();
         caption = in.readString();
-        display_sizes=new ArrayList<DisplaySize>();
+        display_sizes = new ArrayList<DisplaySize>();
         display_sizes = in.createTypedArrayList(DisplaySize.CREATOR);
     }
 
