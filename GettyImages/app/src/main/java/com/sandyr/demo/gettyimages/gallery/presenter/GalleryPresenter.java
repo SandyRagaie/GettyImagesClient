@@ -9,4 +9,7 @@ import android.content.Context;
 public interface GalleryPresenter {
     void onDestroy();
 
+    public void loadNextPage();
+
+    public void searchGettyImages(String searchPhrase);
 }

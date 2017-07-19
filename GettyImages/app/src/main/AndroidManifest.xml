@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".gallery.ui.activity.GalleryImageDetails"
+        <activity android:name=".gallery.ui.activity.GalleryImageDetailsActivity"
             android:theme="@style/Theme.AppCompat.Dialog.Alert"></activity>
     </application>
 

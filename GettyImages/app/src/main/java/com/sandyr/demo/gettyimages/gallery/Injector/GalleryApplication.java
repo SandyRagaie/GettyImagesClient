@@ -7,7 +7,9 @@ import com.sandyr.demo.gettyimages.gallery.Injector.modules.InteractorModule;
 import com.sandyr.demo.gettyimages.gallery.ui.activity.GalleryActivity;
 
 import javax.inject.Singleton;
+
 import dagger.Component;
+
 /**
  * Created by sandyr on 7/16/2017.
  */
@@ -37,7 +39,7 @@ public class GalleryApplication extends Application {
     }
 
     public ApplicationComponent component() {
-        if(component==null){
+        if (component == null) {
             component = DaggerGalleryApplication_ApplicationComponent.builder().build();
         }
         return component;

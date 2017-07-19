@@ -9,5 +9,5 @@ public interface GalleryAdapterListener {
 
     void onImageClick(int position);
 
-    void onEndList();
+    void loadNextPageOnEndOfListReached();
 }

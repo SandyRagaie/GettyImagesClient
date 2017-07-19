@@ -2,8 +2,9 @@ package com.sandyr.demo.gettyimages.gallery.presenter;
 
 import android.content.Context;
 
+import com.sandyr.demo.gettyimages.gallery.Injector.modules.InteractorModule;
+import com.sandyr.demo.gettyimages.gallery.Interactor.Services.GettyImageService;
 import com.sandyr.demo.gettyimages.gallery.model.GettyImage;
-import com.sandyr.demo.gettyimages.gallery.Interactor.RequestManager;
 import com.sandyr.demo.gettyimages.gallery.Interactor.responses.GettyImageResponse;
 import com.sandyr.demo.gettyimages.gallery.view.GalleryView;
 
@@ -13,26 +14,30 @@ import javax.inject.Inject;
 
 import rx.Observer;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by sandyr on 2/23/2017.
  */
 
 public class GalleryPresenterImpl implements GalleryPresenter {
-    private RequestManager manager;
-    private Subscription subscription;
+    public Subscription subscription;
     private GalleryView galleryView;
     private final int pageSize;
+    private String phrase;
     private int page;
     private ArrayList<GettyImage> gettyImages;
     @Inject
+    InteractorModule interactorModule;
+
+    @Inject
     public GalleryPresenterImpl() {
         pageSize = 10;
-        page=1;
-        manager = new RequestManager();
+        phrase = null;
     }
 
-    public void setView(GalleryView view){
+    public void setView(GalleryView view) {
         galleryView = view;
     }
 
@@ -42,43 +47,8 @@ public class GalleryPresenterImpl implements GalleryPresenter {
         galleryView = null;
     }
 
-    /**
-     * get view instance
-     * @return
-     */
-    public GalleryView getGalleryView() {
-        return galleryView;
-    }
-
-    /**
-     * this method should be called for onSaveInstanceState only
-     * @return
-     */
-    public ArrayList<GettyImage> getCachedImages(){
-    if (gettyImages == null) {
-        gettyImages = new ArrayList<GettyImage>();
-    }
-    return gettyImages;
-}
-    /**
-     * This method called when user clicks search button in softkeyboard
-     * @param pageNumber
-     * @param phrase
-     */
-    public void getGettyImages(int pageNumber ,final String phrase) {
-        page=pageNumber;
-        if(gettyImages!=null) {
-            gettyImages.clear();
-            galleryView.onRemoveImagesFromUI();
-        }
-        getGettyImages(phrase);
-    }
-
-    /**
-     * initiate server request
-     * @param phrase
-     */
-    public void getGettyImages(final String phrase) {
+    @Override
+    public void loadNextPage() {
         Observer<GettyImageResponse> myObserver = new Observer<GettyImageResponse>() {
 
             @Override
@@ -98,18 +68,46 @@ public class GalleryPresenterImpl implements GalleryPresenter {
 
             @Override
             public void onNext(GettyImageResponse gettyImageResponse) {
-                if(gettyImageResponse.getItems().size()==0){
+                if (gettyImageResponse.getItems().size() == 0) {
                     galleryView.onEmptyResult();
-                }else {
-                    if (gettyImages == null) {
-                        gettyImages = new ArrayList<GettyImage>();
-                    }
-                    gettyImages.addAll(gettyImageResponse.getItems());
+                } else {
+
+                    gettyImages = gettyImageResponse.getItems();
                 }
             }
 
         };
-        subscription = manager.retrieveGettyImages(myObserver, page,pageSize, phrase);
+
+        GettyImageService service = InteractorModule.provideGettyImageService();
+        subscription = service.getGettyImages(page, pageSize, phrase)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(myObserver);
         galleryView.showProgress();
+    }
+
+    /**
+     * initiate server request
+     *
+     * @param searchPhrase
+     */
+    @Override
+    public void searchGettyImages(String searchPhrase) {
+        if (gettyImages != null) {
+            gettyImages.clear();
+            galleryView.onRemoveImagesFromUI();
+        }
+        page = 1;
+        phrase = searchPhrase;
+        loadNextPage();
+    }
+
+    /**
+     * get view instance
+     *
+     * @return
+     */
+    public GalleryView getGalleryView() {
+        return galleryView;
     }
 }
