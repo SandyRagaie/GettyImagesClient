@@ -46,9 +46,9 @@ public class GalleryPresenterTest {
         item.setTitle("test image title");
         item.setCaption("test caption");
 
-        DisplaySize displaySize=new DisplaySize();
+        DisplaySize displaySize = new DisplaySize();
         displaySize.setUri("https://media.gettyimages.com/photos/models-show-samsung-electronics-cos-android-smartphones-during-the-picture-id96402674?b=1&k=6&m=96402674&s=170x170&h=N07yBNCzfyZdKO9ahoSVfass0L9BrUry8Z2-oOlrHDg=");
-        ArrayList<DisplaySize> arrayList= new ArrayList<DisplaySize>();
+        ArrayList<DisplaySize> arrayList = new ArrayList<DisplaySize>();
         arrayList.add(displaySize);
         item.setDisplay_size(arrayList);
         items.add(item);
