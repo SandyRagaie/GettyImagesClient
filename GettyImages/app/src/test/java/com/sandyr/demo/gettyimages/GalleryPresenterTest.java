@@ -28,7 +28,7 @@ public class GalleryPresenterTest {
     @Before
     public void setUp() throws Exception {
         presenter = new GalleryPresenterImpl();
-        //presenter.setContext(view);
+        presenter.setView(view);
     }
 
 

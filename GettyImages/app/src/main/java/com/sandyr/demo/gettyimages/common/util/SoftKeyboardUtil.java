@@ -9,26 +9,22 @@ import android.widget.EditText;
  * Created by sandyr on 7/16/2017.
  */
 public class SoftKeyboardUtil {
-    private static final SoftKeyboardUtil ourInstance = new SoftKeyboardUtil();
-    private static Context mContext;
+    private static SoftKeyboardUtil ourInstance;
 
-    public static SoftKeyboardUtil getInstance(Context context) {
-        mContext = context;
+    public static SoftKeyboardUtil getInstance() {
+        if(ourInstance == null){
+            ourInstance = new SoftKeyboardUtil();
+        }
         return ourInstance;
     }
 
     private SoftKeyboardUtil() {
     }
 
-    public void hideSoftKeyboard() {
-        if (((Activity) mContext).getCurrentFocus() != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) ((Activity) mContext).getSystemService(((Activity) mContext).INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(((Activity) mContext).getCurrentFocus().getWindowToken(), 0);
+    public void hideSoftKeyboard(Context context) {
+        if (((Activity) context).getCurrentFocus() != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager)  context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(), 0);
         }
-    }
-
-    public void showSoftKeyboard(EditText search) {
-        InputMethodManager imm = (InputMethodManager) ((Activity) mContext).getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(search, InputMethodManager.SHOW_IMPLICIT);
     }
 }

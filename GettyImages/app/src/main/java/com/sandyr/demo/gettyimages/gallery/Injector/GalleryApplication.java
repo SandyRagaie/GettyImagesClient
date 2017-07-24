@@ -16,8 +16,6 @@ import dagger.Component;
 
 public class GalleryApplication extends Application {
 
-    private ApplicationComponent component;
-
     /**
      * Newly added modules must be added to the @Component annotation here. You must also provide
      * further inject() methods for new classes that want to perform injection.
@@ -34,14 +32,6 @@ public class GalleryApplication extends Application {
 
         // This setups up the component which is used by other views (activities/fragments/etc., not Android views) for injection.
         // This pulls all modules which have statically declared @Provides methods automatically.
-        component = DaggerGalleryApplication_ApplicationComponent.builder().build();
-
-    }
-
-    public ApplicationComponent component() {
-        if (component == null) {
-            component = DaggerGalleryApplication_ApplicationComponent.builder().build();
-        }
-        return component;
+        DaggerGalleryApplication_ApplicationComponent.builder().build();
     }
 }
