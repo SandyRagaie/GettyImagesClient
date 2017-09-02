@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class GalleryImageDetailsActivity extends AppCompatActivity {
 
@@ -24,11 +25,13 @@ public class GalleryImageDetailsActivity extends AppCompatActivity {
     @BindView(R.id.caption_details)
     TextView caption_textview;
 
+    Unbinder unbinder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery_image_details);
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
         GettyImage gettyImage = getIntentExtras();
         Picasso.with(this).load(gettyImage.getDisplay_size().get(0).getUri())
                 .error(R.drawable.ic_placeholder)
@@ -50,5 +53,11 @@ public class GalleryImageDetailsActivity extends AppCompatActivity {
     private GettyImage getIntentExtras() {
         GettyImage data = getIntent().getExtras().getParcelable(MAIN_ACTIVITY_GETTY_IMAGE);
         return data;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 }

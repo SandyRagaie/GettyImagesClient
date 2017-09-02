@@ -4,13 +4,11 @@ import com.sandyr.demo.gettyimages.gallery.model.GettyImage;
 
 import java.util.ArrayList;
 
-import dagger.Provides;
-
 /**
  * Created by sandyr on 7/14/2017.
  */
 public class GettyImageResponse {
-    ArrayList<GettyImage> images;
+    private ArrayList<GettyImage> images;
 
     public ArrayList<GettyImage> getItems() {
         return images;

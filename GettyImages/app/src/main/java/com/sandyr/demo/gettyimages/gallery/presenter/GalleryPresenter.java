@@ -1,6 +1,5 @@
 package com.sandyr.demo.gettyimages.gallery.presenter;
 
-import android.content.Context;
 
 /**
  * Created by sandyr on 2/23/2017.
@@ -9,7 +8,7 @@ import android.content.Context;
 public interface GalleryPresenter {
     void onDestroy();
 
-    public void loadNextPage();
+    void loadNextPage();
 
-    public void searchGettyImages(String searchPhrase);
+    void searchGettyImages(String searchPhrase);
 }

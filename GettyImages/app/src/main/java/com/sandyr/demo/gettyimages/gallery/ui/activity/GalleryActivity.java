@@ -73,7 +73,7 @@ public class GalleryActivity extends AppCompatActivity implements GalleryView, G
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                SoftKeyboardUtil.getInstance(GalleryActivity.this).hideSoftKeyboard();
+                SoftKeyboardUtil.getInstance().hideSoftKeyboard(GalleryActivity.this);
             }
         });
         GridLayoutManager lLayout = new GridLayoutManager(GalleryActivity.this, 2);
@@ -142,7 +142,7 @@ public class GalleryActivity extends AppCompatActivity implements GalleryView, G
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         switch (actionId) {
             case EditorInfo.IME_ACTION_SEARCH:
-                SoftKeyboardUtil.getInstance(GalleryActivity.this).hideSoftKeyboard();
+                SoftKeyboardUtil.getInstance().hideSoftKeyboard(GalleryActivity.this);
                 String phrase = v.getText().toString();
                 if (phrase.length() == 0) {
                     //clear Images list from UI
@@ -170,7 +170,7 @@ public class GalleryActivity extends AppCompatActivity implements GalleryView, G
         super.onRestoreInstanceState(savedInstanceState);
         ArrayList<GettyImage> images = savedInstanceState.getParcelableArrayList(SAVED_INSTANCE_DATA);
         mPresenter.getGalleryView().onLoadImagesByPhraseSuccess(images);
-        SoftKeyboardUtil.getInstance(GalleryActivity.this).hideSoftKeyboard();
+        SoftKeyboardUtil.getInstance().hideSoftKeyboard(GalleryActivity.this);
     }
 
     @Override

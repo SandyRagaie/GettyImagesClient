@@ -1,8 +1,6 @@
 package com.sandyr.demo.gettyimages.gallery.presenter;
 
-import android.content.Context;
 
-import com.sandyr.demo.gettyimages.gallery.Injector.modules.InteractorModule;
 import com.sandyr.demo.gettyimages.gallery.Interactor.Services.GettyImageService;
 import com.sandyr.demo.gettyimages.gallery.model.GettyImage;
 import com.sandyr.demo.gettyimages.gallery.Interactor.responses.GettyImageResponse;
@@ -28,8 +26,9 @@ public class GalleryPresenterImpl implements GalleryPresenter {
     private String phrase;
     private int page;
     private ArrayList<GettyImage> gettyImages;
+
     @Inject
-    InteractorModule interactorModule;
+    GettyImageService mService;
 
     @Inject
     public GalleryPresenterImpl() {
@@ -43,7 +42,9 @@ public class GalleryPresenterImpl implements GalleryPresenter {
 
     @Override
     public void onDestroy() {
-        subscription.unsubscribe();
+        if(subscription != null && !subscription.isUnsubscribed()){
+            subscription.unsubscribe();
+        }
         galleryView = null;
     }
 
@@ -78,8 +79,7 @@ public class GalleryPresenterImpl implements GalleryPresenter {
 
         };
 
-        GettyImageService service = InteractorModule.provideGettyImageService();
-        subscription = service.getGettyImages(page, pageSize, phrase)
+        subscription = mService.getGettyImages(page, pageSize, phrase)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(myObserver);
