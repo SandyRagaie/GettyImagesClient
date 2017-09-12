@@ -34,4 +34,5 @@ public class GalleryApplication extends Application {
         // This pulls all modules which have statically declared @Provides methods automatically.
         DaggerGalleryApplication_ApplicationComponent.builder().build();
     }
+
 }

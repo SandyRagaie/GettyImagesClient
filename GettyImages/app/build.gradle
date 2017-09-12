@@ -17,6 +17,7 @@ android {
     }
     packagingOptions {
         exclude 'LICENSE.txt'
+        exclude 'META-INF/rxjava.properties'
     }
     buildTypes {
         release {
@@ -79,6 +80,11 @@ dependencies {
     compile "io.reactivex:rxandroid:$rxandroidLibraryVersion"
     compile "io.reactivex:rxjava:$rxjavaLibraryVersion"
 
+
+    // rxcache library
+    compile "com.github.VictorAlbertos.RxCache:runtime:1.8.0-2.x"
+    compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.3'
+
     // Android runner and rules support
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test:rules:0.5'
@@ -104,4 +110,5 @@ dependencies {
         exclude group: 'com.android.support', module: 'design'
         exclude group: 'com.android.support', module: 'recyclerview-v7'
     }
+
 }

@@ -2,6 +2,7 @@ package com.sandyr.demo.gettyimages.gallery.presenter;
 
 
 import com.sandyr.demo.gettyimages.gallery.Interactor.Services.GettyImageService;
+import com.sandyr.demo.gettyimages.gallery.Interactor.cache.CacheProvider;
 import com.sandyr.demo.gettyimages.gallery.model.GettyImage;
 import com.sandyr.demo.gettyimages.gallery.Interactor.responses.GettyImageResponse;
 import com.sandyr.demo.gettyimages.gallery.view.GalleryView;
@@ -10,6 +11,9 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import io.rx_cache2.DynamicKey;
+import io.rx_cache2.EvictDynamicKey;
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -29,6 +33,10 @@ public class GalleryPresenterImpl implements GalleryPresenter {
 
     @Inject
     GettyImageService mService;
+
+    @Inject
+    CacheProvider mCacheProvider;
+
 
     @Inject
     public GalleryPresenterImpl() {
@@ -79,7 +87,8 @@ public class GalleryPresenterImpl implements GalleryPresenter {
 
         };
 
-        subscription = mService.getGettyImages(page, pageSize, phrase)
+        Observable<GettyImageResponse> gettyObservable =mService.getGettyImages(page, pageSize, phrase);
+        subscription = mCacheProvider.searchGettyImages(gettyObservable,new DynamicKey(phrase+page), new EvictDynamicKey(false))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(myObserver);
