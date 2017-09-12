@@ -29,9 +29,9 @@ public interface GalleryView {
     /**
      * called when error received from server
      *
-     * @param result
+     *
      */
-    void onLoadImagesByPhraseError(String result);
+    void onLoadImagesByPhraseError();
 
     /**
      * called when empty result received from server

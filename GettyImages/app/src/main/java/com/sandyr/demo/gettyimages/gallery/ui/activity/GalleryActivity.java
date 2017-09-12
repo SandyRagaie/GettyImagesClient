@@ -104,7 +104,7 @@ public class GalleryActivity extends AppCompatActivity implements GalleryView, G
     }
 
     @Override
-    public void onLoadImagesByPhraseError(String result) {
+    public void onLoadImagesByPhraseError() {
         String message = getString(R.string.error_downloading);
         Snackbar snackbar = Snackbar
                 .make(mRecyclerView, message, Snackbar.LENGTH_INDEFINITE)

@@ -1,6 +1,7 @@
 package com.sandyr.demo.gettyimages.gallery.presenter;
 
 
+import com.sandyr.demo.gettyimages.gallery.Injector.modules.InteractorModule;
 import com.sandyr.demo.gettyimages.gallery.Interactor.Services.GettyImageService;
 import com.sandyr.demo.gettyimages.gallery.Interactor.cache.CacheProvider;
 import com.sandyr.demo.gettyimages.gallery.model.GettyImage;
@@ -11,20 +12,24 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import io.rx_cache2.DynamicKey;
 import io.rx_cache2.EvictDynamicKey;
-import rx.Observable;
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 /**
  * Created by sandyr on 2/23/2017.
  */
 
 public class GalleryPresenterImpl implements GalleryPresenter {
-    public Subscription subscription;
+    public Disposable subscription;
     private GalleryView galleryView;
     private final int pageSize;
     private String phrase;
@@ -36,6 +41,8 @@ public class GalleryPresenterImpl implements GalleryPresenter {
 
     @Inject
     CacheProvider mCacheProvider;
+    @Inject
+    InteractorModule mInteractorModule;
 
 
     @Inject
@@ -50,49 +57,44 @@ public class GalleryPresenterImpl implements GalleryPresenter {
 
     @Override
     public void onDestroy() {
-        if(subscription != null && !subscription.isUnsubscribed()){
-            subscription.unsubscribe();
+        if (subscription != null && !subscription.isDisposed()) {
+            subscription.dispose();
         }
         galleryView = null;
     }
 
     @Override
     public void loadNextPage() {
-        Observer<GettyImageResponse> myObserver = new Observer<GettyImageResponse>() {
+        mInteractorModule.searchGettyImages(mCacheProvider, mService, page, pageSize, phrase)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<GettyImageResponse>() {
+                    @Override
+                    public void accept(@NonNull GettyImageResponse gettyImageResponse) throws Exception {
+                        if (gettyImageResponse.getItems().size() == 0) {
+                            galleryView.onEmptyResult();
+                        } else {
 
-            @Override
-            public void onCompleted() {
-                if (gettyImages != null) {
-                    page++;
-                    galleryView.onLoadImagesByPhraseSuccess(gettyImages);
-                }
-                galleryView.hideProgress();
-            }
+                            gettyImages = gettyImageResponse.getItems();
+                        }
+                        if (gettyImages != null) {
+                            page++;
+                            galleryView.onLoadImagesByPhraseSuccess(gettyImages);
+                        }
+                        galleryView.hideProgress();
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                galleryView.onLoadImagesByPhraseError(e.getMessage());
-                galleryView.hideProgress();
-            }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable e) throws Exception {
+                        galleryView.onLoadImagesByPhraseError();
+                        galleryView.hideProgress();
+                        e.printStackTrace();
+                    }
+                });
 
-            @Override
-            public void onNext(GettyImageResponse gettyImageResponse) {
-                if (gettyImageResponse.getItems().size() == 0) {
-                    galleryView.onEmptyResult();
-                } else {
-
-                    gettyImages = gettyImageResponse.getItems();
-                }
-            }
-
-        };
-
-        Observable<GettyImageResponse> gettyObservable =mService.getGettyImages(page, pageSize, phrase);
-        subscription = mCacheProvider.searchGettyImages(gettyObservable,new DynamicKey(phrase+page), new EvictDynamicKey(false))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(myObserver);
         galleryView.showProgress();
+
+
     }
 
     /**
