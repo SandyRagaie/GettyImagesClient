@@ -54,7 +54,7 @@ public class InteractorModule {
 
     @Provides
     public File provideFile(android.content.Context context){
-        return context.getExternalFilesDir(null);
+        return context.getFilesDir();
     }
 
 }
