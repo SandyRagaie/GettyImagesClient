@@ -1,17 +1,14 @@
 package com.sandyr.demo.gettyimages.gallery.Injector.modules;
 
-import android.app.Activity;
+
 import android.os.Environment;
 
 import com.sandyr.demo.gettyimages.BuildConfig;
 import com.sandyr.demo.gettyimages.gallery.Interactor.Services.GettyImageService;
 import com.sandyr.demo.gettyimages.gallery.Interactor.cache.CacheProvider;
-import com.sandyr.demo.gettyimages.gallery.Interactor.responses.GettyImageResponse;
-import com.sandyr.demo.gettyimages.gallery.presenter.GalleryPresenterImpl;
 
 import java.io.File;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -23,15 +20,13 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
 /**
  * Created by sandyr on 7/17/2017.
  */
-@Module
+@Module(includes = {ContextModule.class})
 public class InteractorModule {
 
-    @Inject
-    GalleryPresenterImpl mPresenter;
+
     @Provides
     @Singleton
     static public CacheProvider provideCacheProvider(File cacheDir)
@@ -58,11 +53,8 @@ public class InteractorModule {
     }
 
     @Provides
-    public File provideFile(){
-        return Environment.getExternalStorageDirectory();
-        //return  ((Activity)mPresenter.getGalleryView()).getApplication().getApplicationContext().getExternalCacheDir();
-        //String storagePath = System.getenv("SECONDARY_STORAGE");
-        //return new File(storagePath);
+    public File provideFile(android.content.Context context){
+        return context.getExternalFilesDir(null);
     }
 
 }
