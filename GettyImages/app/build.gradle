@@ -41,7 +41,7 @@ ext {
     rxandroidLibraryVersion = '1.2.1'
     rxjavaLibraryVersion ='1.1.6'
     gsonLibraryVersion = '2.7'
-    DAGGERLibraryVersion = "2.7"
+    DAGGERLibraryVersion = "2.9"
 }
 
 dependencies {

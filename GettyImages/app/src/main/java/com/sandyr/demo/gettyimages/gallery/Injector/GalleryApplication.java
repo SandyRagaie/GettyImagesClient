@@ -2,6 +2,7 @@ package com.sandyr.demo.gettyimages.gallery.Injector;
 
 import android.app.Application;
 
+import com.sandyr.demo.gettyimages.gallery.Injector.modules.ContextModule;
 import com.sandyr.demo.gettyimages.gallery.Injector.modules.GalleryPresenterModule;
 import com.sandyr.demo.gettyimages.gallery.Injector.modules.InteractorModule;
 import com.sandyr.demo.gettyimages.gallery.ui.activity.GalleryActivity;
@@ -21,7 +22,7 @@ public class GalleryApplication extends Application {
      * further inject() methods for new classes that want to perform injection.
      */
     @Singleton
-    @Component(modules = {GalleryPresenterModule.class, InteractorModule.class})
+    @Component(modules = {GalleryPresenterModule.class, InteractorModule.class, ContextModule.class})
     public interface ApplicationComponent {
         void inject(GalleryActivity galleryActivity);
     }

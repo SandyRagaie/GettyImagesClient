@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.sandyr.demo.gettyimages.R;
+import com.sandyr.demo.gettyimages.gallery.Injector.modules.ContextModule;
 import com.sandyr.demo.gettyimages.gallery.model.GettyImage;
 import com.sandyr.demo.gettyimages.common.util.SoftKeyboardUtil;
 import com.sandyr.demo.gettyimages.gallery.Injector.DaggerGalleryApplication_ApplicationComponent;
@@ -53,7 +54,8 @@ public class GalleryActivity extends AppCompatActivity implements GalleryView, G
         unbinder = ButterKnife.bind(this);
         /* The component setup in the GalleryApplication takes all Module classes and fills in @Inject
          * annotated fields for you automatically.*/
-        DaggerGalleryApplication_ApplicationComponent.builder().build().inject(this);
+        DaggerGalleryApplication_ApplicationComponent.builder().contextModule(new ContextModule(getApplicationContext()))
+                .build().inject(this);
 
         mPresenter.setView(this);
         search.setOnEditorActionListener(this);
